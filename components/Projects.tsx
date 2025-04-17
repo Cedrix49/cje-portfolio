@@ -4,6 +4,7 @@ import Image from "next/image";
 import proj1 from "../public/assets/proj1.jpeg";
 import proj2 from "../public/assets/proj2.jpeg";
 import proj3 from "../public/assets/proj3.jpeg";
+import proj4 from "../public/assets/proj4.jpeg";
 import { useMotionTemplate, useMotionValue, motion, animate, AnimatePresence, useInView } from "framer-motion";
 
 const projects = [
@@ -37,6 +38,16 @@ const projects = [
         image: proj3,
         demoUrl: "https://cedrix49.github.io/cbis", 
     },
+    {   
+        id: 4,
+        year: 2025,
+        title: "Grease Monkey Automotive Repair: Web-Based Scheduling & Management System",
+        description: "A web-based scheduling and management system for a grease monkey automotive repair shop",
+        technologies: ["HTML", "CSS", "PHP", "JavaScript", "MySQL",],
+        icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-mysql.svg"],
+        image: proj4,
+        demoUrl: "https://cedrix49.github.io/cbis", 
+    },
 ];
 
 const COLORS_TOP = [
@@ -46,7 +57,6 @@ const COLORS_TOP = [
     '#DD335C',
 ]
 
-// Animation variants for content sections
 const contentVariants = {
     hidden: { 
         opacity: 0, 
@@ -70,7 +80,6 @@ const contentVariants = {
     }
 };
 
-// Animation variants for project headers
 const headerVariants = {
     normal: { scale: 1 },
     hover: { scale: 1.03, transition: { duration: 0.2 } },
@@ -93,12 +102,10 @@ export const Projects = () => {
     const [selectedProject, setSelectedProject] = useState(projects[0]);  
     const color = useMotionValue(COLORS_TOP[0]);
     
-    // Refs for scroll animations
     const sectionRef = useRef(null);
     const contentRef = useRef(null);
     const imageRef = useRef(null);
     
-    // InView hooks for triggering animations
     const isSectionInView = useInView(sectionRef, { once: true, amount: 0.2 });
     const isImageInView = useInView(imageRef, { once: true, amount: 0.5 });
     
@@ -129,7 +136,6 @@ export const Projects = () => {
         window.open(url, '_blank');
     };
     
-    // Animation variants for section container
     const sectionVariants = {
         hidden: { opacity: 0 },
         visible: { 
@@ -142,7 +148,6 @@ export const Projects = () => {
         }
     };
     
-    // Animation variants for children elements
     const childVariants = {
         hidden: { opacity: 0, y: 50 },
         visible: { 
@@ -155,7 +160,6 @@ export const Projects = () => {
         }
     };
     
-    // Animation variants for project image
     const imageVariants = {
         hidden: { opacity: 0, scale: 0.9, y: 30 },
         visible: { 
@@ -169,7 +173,6 @@ export const Projects = () => {
         }
     };
 
-    // Animation variants for project item transitions
     const projectItemVariants = {
         initial: { opacity: 0, height: 0 },
         animate: { 
@@ -192,7 +195,6 @@ export const Projects = () => {
         }
     };
 
-    // Animation variants for technology items
     const techItemVariants = {
         initial: { opacity: 0, x: -10 },
         animate: { 
