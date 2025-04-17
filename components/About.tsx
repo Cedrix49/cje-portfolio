@@ -34,7 +34,7 @@ const skills = [
     },
     {
         name: "Next.js",
-        icon: "/assets/icons8-next.svg"
+        icon: "/assets/next.svg"
     },
     {
         name: "PHP",

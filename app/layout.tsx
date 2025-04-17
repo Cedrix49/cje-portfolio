@@ -31,9 +31,16 @@ export const metadata: Metadata = {
   title: "Portfolio",
   description: "My personal portfolio website",
   icons: {
-    icon: '/assets/logo.png',
-    shortcut: '/assets/logo.png',
-    apple: '/assets/logo.png',
+    icon: [
+      { url: '/assets/favicon.ico' },
+      { url: '/assets/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/assets/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: { url: '/assets/apple-touch-icon.png' },
+    other: [
+      { url: '/assets/android-chrome-192x192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/assets/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
+    ]
   },
 };
 
