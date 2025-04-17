@@ -93,7 +93,7 @@ export const Navbar = () => {
             </ul>
         </div>
 
-        <div onClick={toggleNav} className="cursor-pointer md:hidden absolute top-5 right-14 
+        <div onClick={toggleNav} className="cursor-pointer md:hidden absolute top-5 right-5 
                                           z-50 text-white/70 p-2 hover:text-white transition-colors duration-300">
             {nav ? <AiOutlineClose size={28} /> : <AiOutlineMenu size={28} />}
         </div>
