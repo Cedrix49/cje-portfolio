@@ -68,10 +68,6 @@ export const Hero = () => {
 
     const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #000 50%, ${color})`;
     
-
-    // Particles animation
-    const particles = Array.from({ length: 20 });
-
     return (
         <motion.section
             style={{
@@ -79,33 +75,6 @@ export const Hero = () => {
             }}
             className='relative grid min-h-screen place-content-center overflow-hidden px-4 py-24 text-gray-200'
         >
-            {/* Animated particles in the background */}
-            {particles.map((_, index) => (
-                <motion.div
-                    key={index}
-                    className="absolute rounded-full"
-                    style={{
-                        backgroundColor: currentColor,
-                        width: Math.random() * 6 + 2, 
-                        height: Math.random() * 6 + 2,
-                        opacity: Math.random() * 0.3 + 0.1,
-                        top: `${Math.random() * 100}%`,
-                        left: `${Math.random() * 100}%`,
-                    }}
-                    animate={{
-                        y: [0, Math.random() * -100 - 50],
-                        opacity: [Math.random() * 0.3 + 0.1, 0],
-                    }}
-                    transition={{
-                        duration: Math.random() * 10 + 10,
-                        repeat: Infinity,
-                        repeatType: "loop",
-                        ease: "linear",
-                        delay: Math.random() * 5,
-                    }}
-                />
-            ))}
-            
             <div>
                 <TypewriterEffectSmooth words={words} />
                 
