@@ -105,7 +105,9 @@ export const About = () => {
                             className="cursor-pointer"
                         >
                             <h3 className="text-3xl font-semibold mb-4 hover:text-gray-300 transition-colors">Who I Am</h3>
-                            <div className="border-b-2 border-gray-200 my-4"></div>
+                            {activeSection === "whoIAm" && (
+                                <div className="border-b-2 border-gray-200 my-4"></div>
+                            )}
                         </div>
                         {activeSection === "whoIAm" && (
                             <p className="text-gray-400 mb-6">
@@ -123,7 +125,9 @@ export const About = () => {
                             className="cursor-pointer"
                         >
                             <h3 className="text-3xl font-semibold mb-4 hover:text-gray-300 transition-colors">Technical Skills</h3>
-                            <div className="border-b-2 border-gray-200 my-4"></div>
+                            {activeSection === "skills" && (
+                                <div className="border-b-2 border-gray-200 my-4"></div>
+                            )}
                         </div>
                         {activeSection === "skills" && (
                             <div className="flex flex-wrap gap-4 mb-6">
@@ -150,7 +154,9 @@ export const About = () => {
                             className="cursor-pointer"
                         >
                             <h3 className="text-3xl font-semibold mb-4 hover:text-gray-300 transition-colors">Experience</h3>
-                            <div className="border-b-2 border-gray-200 my-4"></div>
+                            {activeSection === "experience" && (
+                                <div className="border-b-2 border-gray-200 my-4"></div>
+                            )}
                         </div>
                         {activeSection === "experience" && (
                             <>
@@ -171,17 +177,7 @@ export const About = () => {
                 
                 <div className="relative flex items-center justify-center">
                     <div className="relative w-4/5 aspect-square">
-                        {/* Glowing circle behind the image */}
-                        <div 
-                            className="absolute inset-0 rounded-full blur-md" 
-                            style={{ 
-                                background: `radial-gradient(circle at center, ${COLORS_TOP[0]}40 0%, transparent 70%)`,
-                                transform: 'scale(1.1)'
-                            }}
-                        ></div>
-                        
-                        {/* Profile image with subtle border */}
-                        <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-opacity-30" style={{ borderColor: COLORS_TOP[0] }}>
+                        <div className="relative w-full h-full rounded-full overflow-hidden">
                             <Image 
                                 src={profilePic}
                                 alt="Profile Picture"
@@ -190,26 +186,6 @@ export const About = () => {
                                 priority
                             />
                         </div>
-                        
-                        {/* Decorative circle element */}
-                        <motion.div 
-                            className="absolute rounded-full w-20 h-20 border-2 border-opacity-60"
-                            style={{ 
-                                borderColor: color,
-                                top: '10%',
-                                right: '-5%'
-                            }}
-                        ></motion.div>
-                        
-                        {/* Decorative dot element */}
-                        <motion.div 
-                            className="absolute rounded-full w-4 h-4"
-                            style={{ 
-                                backgroundColor: color,
-                                bottom: '15%',
-                                right: '10%'
-                            }}
-                        ></motion.div>
                     </div>
                 </div>
             </div>
