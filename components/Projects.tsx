@@ -44,7 +44,7 @@ const projects = [
         title: "Grease Monkey Automotive Repair: Web-Based Scheduling & Management System",
         description: "A web-based scheduling and management system for a grease monkey automotive repair shop",
         technologies: ["HTML", "CSS", "PHP", "JavaScript", "MySQL",],
-        icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-mysql.svg"],
+        icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-sql.svg"],
         image: proj4,
         demoUrl: "https://cedrix49.github.io/cbis", 
     },
