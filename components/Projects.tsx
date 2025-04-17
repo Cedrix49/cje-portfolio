@@ -1,9 +1,9 @@
 "use client"
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import proj1 from "../public/assets/proj1.jpg";
-import proj2 from "../public/assets/proj2.jpg";
-import proj3 from "../public/assets/proj3.jpg";
+import proj1 from "../public/assets/proj1.jpeg";
+import proj2 from "../public/assets/proj2.jpeg";
+import proj3 from "../public/assets/proj3.jpeg";
 import { useMotionTemplate, useMotionValue, motion, animate} from "framer-motion";
 
 const projects = [
@@ -129,15 +129,20 @@ export const Projects = () => {
                             </div>  
                         ))}
                     </div>
-                    <div className="relative">
+                    <div className="relative w-full mx-auto">
                         <Image 
                             src={selectedProject.image}
                             alt={selectedProject.title}
-                            className="rounded-xl shadow-lg transition-opacity duration-500 ease-in-out"
+                            className="rounded-xl shadow-lg transition-opacity duration-500 ease-in-out w-full object-cover"
                             width={800}
                             height={450}
+                            sizes="(max-width: 768px) 100vw, 800px"
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL={selectedProject.image.src}
                         />
-                        <div className="absolute top-4 right-4">
+
+                        <div className="absolute top-2 right-2 md:top-4 md:right-4">
                             <button
                                 onClick={(e) => handleDemoClick(e, selectedProject.demoUrl)}
                                 className="cursor-pointer px-6 py-3 bg-black bg-opacity-70 hover:bg-opacity-90 text-white rounded-md transition-all duration-300 flex items-center gap-2"
@@ -180,7 +185,7 @@ export const Projects = () => {
                         </div>
                         
                         <div className="text-gray-400 text-center">
-                            <p>&copy; 2025 Copyright Cedrix James Estoquia. All rights reserved.</p>
+                            <p>&copy; 2025 Copyright <br />Cedrix James Estoquia. All rights reserved.</p>
                         </div>
                     </div>
                 </div>
