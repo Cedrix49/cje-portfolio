@@ -6,6 +6,8 @@ import proj1 from "../public/assets/proj1.jpeg";
 import proj2 from "../public/assets/proj2.jpeg";
 import proj3 from "../public/assets/proj3.jpeg";
 import proj4 from "../public/assets/proj4.jpeg";
+import proj5 from "../public/assets/proj5.jpeg";
+import proj6 from "../public/assets/proj6.jpeg";
 import { useMotionTemplate, useMotionValue, motion, animate, AnimatePresence, useInView } from "framer-motion";
 
 interface ProjectType {
