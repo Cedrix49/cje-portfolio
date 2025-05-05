@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import type { StaticImageData } from "next/image"; 
 import proj1 from "../public/assets/proj1.jpeg";
 import proj2 from "../public/assets/proj2.jpeg";
 import proj3 from "../public/assets/proj3.jpeg";
