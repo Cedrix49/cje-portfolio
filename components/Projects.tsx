@@ -15,7 +15,7 @@ interface ProjectType {
     category: string;
     technologies: string[];
     icons: string[];
-    image: any; // Using 'any' for the imported image type
+    image: StaticImageData;
     demoUrl: string;
 }
 
