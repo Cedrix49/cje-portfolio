@@ -191,7 +191,7 @@ export const Projects = () => {
         }
     }, [activeFilter]);
     
-    const handleFilterChange = (filter) => {
+    const handleFilterChange = (filter: string) => {
         setActiveFilter(filter);
     };
     
