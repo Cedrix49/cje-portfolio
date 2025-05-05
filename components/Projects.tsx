@@ -56,7 +56,7 @@ const projects: ProjectType[] = [
     },
     {   
         id: 4,
-        year: 2025,
+        year: 2024,
         title: "Grease Monkey Automotive Repair: Web-Based Scheduling & Management System",
         description: "A web-based scheduling and management system for a grease monkey automotive repair shop",
         category: "Management System",
@@ -64,6 +64,28 @@ const projects: ProjectType[] = [
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-sql.svg"],
         image: proj4,
         demoUrl: "https://cedrix49.github.io/cbis", 
+    },
+    {
+        id: 5,
+        year: 2025,
+        title: "Complete Authentication System using JWT - Build In MERN Stack",
+        description: "A complete authentication system built in MERN Stack",
+        category: "Practice",
+        technologies: ["React", "Tailwind CSS", "Express.js", "Node.js", "MongoDB"],
+        icons: ["/assets/icons8-react.svg", "/assets/icons8-express-js.svg", "/assets/icons8-mongodb.svg", "/assets/icons8-tailwind.svg", "/assets/icons8-node-js.svg"],
+        image: proj5,
+        demoUrl: "https://completauth.vercel.app",
+    },
+    {
+        id: 6,
+        year: 2025,
+        title: "Mental Health Journal",
+        description: "A mental health journal built using MERN Stack for people to write their thoughts",
+        category: "Practice",
+        technologies: ["React", "Tailwind CSS", "Express.js", "Node.js", "MongoDB"],
+        icons: ["/assets/icons8-react.svg", "/assets/icons8-express-js.svg", "/assets/icons8-mongodb.svg", "/assets/icons8-tailwind.svg", "/assets/icons8-node-js.svg"],
+        image: proj5,
+        demoUrl: "https://mental-health-journal-five.vercel.app",
     },
 ];
 
