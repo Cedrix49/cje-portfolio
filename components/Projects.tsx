@@ -86,7 +86,7 @@ const projects: ProjectType[] = [
         category: "Practice",
         technologies: ["React", "Tailwind CSS", "Express.js", "Node.js", "MongoDB"],
         icons: ["/assets/icons8-react.svg", "/assets/icons8-express-js.svg", "/assets/icons8-mongodb.svg", "/assets/icons8-tailwind.svg", "/assets/icons8-node-js.svg"],
-        image: proj5,
+        image: proj6,
         demoUrl: "https://mental-health-journal-five.vercel.app",
     },
 ];
