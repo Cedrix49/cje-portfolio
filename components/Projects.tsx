@@ -7,7 +7,19 @@ import proj3 from "../public/assets/proj3.jpeg";
 import proj4 from "../public/assets/proj4.jpeg";
 import { useMotionTemplate, useMotionValue, motion, animate, AnimatePresence, useInView } from "framer-motion";
 
-const projects = [
+interface ProjectType {
+    id: number;
+    year: number;
+    title: string;
+    description: string;
+    category: string;
+    technologies: string[];
+    icons: string[];
+    image: any; // Using 'any' for the imported image type
+    demoUrl: string;
+}
+
+const projects: ProjectType[] = [
     {
         id: 1,
         year: 2025,
@@ -103,7 +115,13 @@ const dividerVariants = {
 };
 
 // Project Filter Component
-const ProjectFilter = ({ categories, onFilterChange, activeFilter }) => {
+interface ProjectFilterProps {
+    categories: string[];
+    onFilterChange: (filter: string) => void;
+    activeFilter: string;
+}
+
+const ProjectFilter: React.FC<ProjectFilterProps> = ({ categories, onFilterChange, activeFilter }) => {
     return (
         <motion.div 
             className="flex flex-wrap gap-3 mb-8"
@@ -160,17 +178,15 @@ export const Projects = () => {
     
     // Filter projects when activeFilter changes
     useEffect(() => {
-        if (activeFilter === "all") {
-            setFilteredProjects(projects);
-        } else {
-            setFilteredProjects(
-                projects.filter(project => project.category === activeFilter)
-            );
-        }
+        const newFilteredProjects = activeFilter === "all" 
+            ? projects 
+            : projects.filter(project => project.category === activeFilter);
+        
+        setFilteredProjects(newFilteredProjects);
         
         // Set first filtered project as selected when filter changes
-        if (filteredProjects.length > 0) {
-            setSelectedProject(filteredProjects[0]);
+        if (newFilteredProjects.length > 0) {
+            setSelectedProject(newFilteredProjects[0]);
         }
     }, [activeFilter]);
     
@@ -200,7 +216,7 @@ export const Projects = () => {
     
     const backgroundImage = useMotionTemplate`radial-gradient( 125% 125% at 50% 0%, #000 50%, ${color})`
     
-    const handleDemoClick = (e, url) => {
+    const handleDemoClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
         e.stopPropagation();
         window.open(url, '_blank');
     };
