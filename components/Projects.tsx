@@ -13,6 +13,7 @@ const projects = [
         year: 2025,
         title: "Movie Web Application",
         description: "A movie web application that allows users to search for movies and view details about them.",
+        category: "Web App",
         technologies: ["React", "Appwrite", "Tailwind CSS"],
         icons: ["/assets/icons8-react.svg", "/assets/Appwrite.svg", "/assets/icons8-tailwind.svg"],
         image: proj1,
@@ -23,6 +24,7 @@ const projects = [
         year: 2025,
         title: "Sushiro- Sushi Restaurant Website",
         description: "A front-end website for a sushi restaurant",
+        category: "Website",
         technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-bootstrap.svg", "/assets/icons8-js.svg"],
         image: proj2,
@@ -33,6 +35,7 @@ const projects = [
         year: 2025,
         title: "New CBIS design",
         description: "A new web design for the CBIS website",
+        category: "Website",
         technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-bootstrap.svg", "/assets/icons8-js.svg"],
         image: proj3,
@@ -43,7 +46,8 @@ const projects = [
         year: 2025,
         title: "Grease Monkey Automotive Repair: Web-Based Scheduling & Management System",
         description: "A web-based scheduling and management system for a grease monkey automotive repair shop",
-        technologies: ["HTML", "CSS", "PHP", "JavaScript", "MySQL",],
+        category: "Management System",
+        technologies: ["HTML", "CSS", "PHP", "JavaScript", "MySQL"],
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-sql.svg"],
         image: proj4,
         demoUrl: "https://cedrix49.github.io/cbis", 
@@ -98,8 +102,50 @@ const dividerVariants = {
     }
 };
 
+// Project Filter Component
+const ProjectFilter = ({ categories, onFilterChange, activeFilter }) => {
+    return (
+        <motion.div 
+            className="flex flex-wrap gap-3 mb-8"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+        >
+            <motion.button
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 
+                    ${activeFilter === "all" 
+                        ? "bg-white text-black" 
+                        : "bg-black bg-opacity-30 text-white hover:bg-opacity-50"}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => onFilterChange("all")}
+            >
+                All
+            </motion.button>
+            
+            {categories.map((category) => (
+                <motion.button
+                    key={category}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 
+                        ${activeFilter === category 
+                            ? "bg-white text-black" 
+                            : "bg-black bg-opacity-30 text-white hover:bg-opacity-50"}`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onFilterChange(category)}
+                >
+                    {category}
+                </motion.button>
+            ))}
+        </motion.div>
+    );
+};
+
 export const Projects = () => {
     const [selectedProject, setSelectedProject] = useState(projects[0]);  
+    const [activeFilter, setActiveFilter] = useState("all");
+    const [filteredProjects, setFilteredProjects] = useState(projects);
+    
     const color = useMotionValue(COLORS_TOP[0]);
     
     const sectionRef = useRef(null);
@@ -108,6 +154,29 @@ export const Projects = () => {
     
     const isSectionInView = useInView(sectionRef, { once: true, amount: 0.2 });
     const isImageInView = useInView(imageRef, { once: true, amount: 0.5 });
+    
+    // Extract unique categories
+    const categories = [...new Set(projects.map(project => project.category))];
+    
+    // Filter projects when activeFilter changes
+    useEffect(() => {
+        if (activeFilter === "all") {
+            setFilteredProjects(projects);
+        } else {
+            setFilteredProjects(
+                projects.filter(project => project.category === activeFilter)
+            );
+        }
+        
+        // Set first filtered project as selected when filter changes
+        if (filteredProjects.length > 0) {
+            setSelectedProject(filteredProjects[0]);
+        }
+    }, [activeFilter]);
+    
+    const handleFilterChange = (filter) => {
+        setActiveFilter(filter);
+    };
     
     useEffect(() => {
         const sequence = async () => {
@@ -131,7 +200,7 @@ export const Projects = () => {
     
     const backgroundImage = useMotionTemplate`radial-gradient( 125% 125% at 50% 0%, #000 50%, ${color})`
     
-    const handleDemoClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
+    const handleDemoClick = (e, url) => {
         e.stopPropagation();
         window.open(url, '_blank');
     };
@@ -228,95 +297,113 @@ export const Projects = () => {
                         >
                             Completed <motion.span style={{ color }}>Projects</motion.span>
                         </motion.h2>
-                        {projects.map((project, index) => (
-                            <motion.div 
-                                key={project.id} 
-                                className="mb-10"
-                                variants={childVariants}
-                                custom={index}
-                                transition={{
-                                    delay: index * 0.15
-                                }}
-                            >
-                                <motion.div
-                                    onClick={() => setSelectedProject(project)}
-                                    className="cursor-pointer mb-8 group"
-                                    variants={headerVariants}
-                                    initial="normal"
-                                    whileHover="hover"
-                                    whileTap="tap"
+                        
+                        {/* Project Filter Component */}
+                        <ProjectFilter 
+                            categories={categories} 
+                            onFilterChange={handleFilterChange} 
+                            activeFilter={activeFilter}
+                        />
+                        
+                        {/* Project List */}
+                        <AnimatePresence mode="wait">
+                            {filteredProjects.map((project, index) => (
+                                <motion.div 
+                                    key={project.id} 
+                                    className="mb-10"
+                                    variants={childVariants}
+                                    custom={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    transition={{
+                                        delay: index * 0.15,
+                                        duration: 0.4
+                                    }}
                                 >
-                                    <p className="text-gray-400 text-large mb-2">{project.year}</p>
-                                    <h3 className={`text-3xl font-semibold group-hover:text-gray-400 transition-colors 
-                                        ${selectedProject.id === project.id ? 'text-gray-200' : ''} duration-300`}>
-                                        {project.title}
-                                    </h3>
-                                    
-                                    <AnimatePresence>
-                                        {selectedProject.id === project.id && (
-                                            <motion.div 
-                                                className="border-b-2 border-gray-200 my-4"
-                                                variants={dividerVariants}
-                                                initial="hidden"
-                                                animate="visible"
-                                                exit="hidden"
-                                            />
-                                        )}
-                                    </AnimatePresence>
-                                    
-                                    <AnimatePresence>
-                                        {selectedProject.id === project.id && (
-                                            <motion.div
-                                                variants={projectItemVariants}
-                                                initial="initial"
-                                                animate="animate"
-                                                exit="exit"
-                                            >
-                                                <motion.p 
-                                                    className="text-gray-400 transition-all duration-500 ease-in-out mb-3"
-                                                    variants={contentVariants}
+                                    <motion.div
+                                        onClick={() => setSelectedProject(project)}
+                                        className="cursor-pointer mb-8 group"
+                                        variants={headerVariants}
+                                        initial="normal"
+                                        whileHover="hover"
+                                        whileTap="tap"
+                                    >
+                                        <div className="flex justify-between">
+                                            <p className="text-gray-400 text-large mb-2">{project.year}</p>
+                                            <p className="text-gray-400 text-large mb-2">{project.category}</p>
+                                        </div>
+                                        <h3 className={`text-3xl font-semibold group-hover:text-gray-400 transition-colors 
+                                            ${selectedProject.id === project.id ? 'text-gray-200' : ''} duration-300`}>
+                                            {project.title}
+                                        </h3>
+                                        
+                                        <AnimatePresence>
+                                            {selectedProject.id === project.id && (
+                                                <motion.div 
+                                                    className="border-b-2 border-gray-200 my-4"
+                                                    variants={dividerVariants}
+                                                    initial="hidden"
+                                                    animate="visible"
+                                                    exit="hidden"
+                                                />
+                                            )}
+                                        </AnimatePresence>
+                                        
+                                        <AnimatePresence>
+                                            {selectedProject.id === project.id && (
+                                                <motion.div
+                                                    variants={projectItemVariants}
+                                                    initial="initial"
+                                                    animate="animate"
+                                                    exit="exit"
                                                 >
-                                                    {project.description}
-                                                </motion.p>
-                                                
-                                                <div className="flex flex-wrap gap-4 mb-4">
-                                                    {project.technologies.map((tech, index) => (
-                                                        <motion.div 
-                                                            key={index} 
-                                                            className="flex items-center text-white"
-                                                            variants={techItemVariants}
-                                                        >
-                                                            <Image 
-                                                                src={project.icons[index]} 
-                                                                alt={tech} 
-                                                                width={20} 
-                                                                height={20} 
-                                                                className="mr-2"
-                                                            />
-                                                            <span>{tech}</span>
-                                                        </motion.div>
-                                                    ))}
-                                                </div>
-                                                
-                                                <motion.button
-                                                    onClick={(e) => handleDemoClick(e, project.demoUrl)}
-                                                    className="mt-4 cursor-pointer px-4 py-2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white rounded-md transition-all duration-300 flex items-center gap-2"
-                                                    variants={techItemVariants}
-                                                    whileHover={{ scale: 1.05 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                >
-                                                    <span>Live Demo</span>
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                                                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                                                    </svg>
-                                                </motion.button>
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </motion.div>
-                            </motion.div>  
-                        ))}
+                                                    <motion.p 
+                                                        className="text-gray-400 transition-all duration-500 ease-in-out mb-3"
+                                                        variants={contentVariants}
+                                                    >
+                                                        {project.description}
+                                                    </motion.p>
+                                                    
+                                                    <div className="flex flex-wrap gap-4 mb-4">
+                                                        {project.technologies.map((tech, index) => (
+                                                            <motion.div 
+                                                                key={index} 
+                                                                className="flex items-center text-white"
+                                                                variants={techItemVariants}
+                                                            >
+                                                                <Image 
+                                                                    src={project.icons[index]} 
+                                                                    alt={tech} 
+                                                                    width={20} 
+                                                                    height={20} 
+                                                                    className="mr-2"
+                                                                />
+                                                                <span>{tech}</span>
+                                                            </motion.div>
+                                                        ))}
+                                                    </div>
+                                                    
+                                                    <motion.button
+                                                        onClick={(e) => handleDemoClick(e, project.demoUrl)}
+                                                        className="mt-4 cursor-pointer px-4 py-2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white rounded-md transition-all duration-300 flex items-center gap-2"
+                                                        variants={techItemVariants}
+                                                        whileHover={{ scale: 1.05 }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                    >
+                                                        <span>Live Demo</span>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                                                        </svg>
+                                                    </motion.button>
+                                                </motion.div>
+                                            )}
+                                        </AnimatePresence>
+                                    </motion.div>
+                                </motion.div>  
+                            ))}
+                        </AnimatePresence>
                     </motion.div>
                     <motion.div 
                         className="relative w-full mx-auto"
