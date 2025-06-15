@@ -116,13 +116,13 @@ interface ProjectFilterProps {
 const ProjectFilter: React.FC<ProjectFilterProps> = ({ categories, onFilterChange, activeFilter }) => {
     return (
         <motion.div 
-            className="flex flex-wrap justify-center gap-4 mb-16"
+            className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-12 sm:mb-16 px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
             <motion.button
-                className={`px-8 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 backdrop-blur-md border-2
+                className={`px-4 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 backdrop-blur-md border-2
                     ${activeFilter === "all" 
                         ? "bg-white text-black shadow-2xl border-white scale-105" 
                         : "bg-white/5 text-white hover:bg-white/10 border-white/20 hover:border-white/40"}`}
@@ -136,7 +136,7 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({ categories, onFilterChang
             {categories.map((category) => (
                 <motion.button
                     key={category}
-                    className={`px-8 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 backdrop-blur-md border-2
+                    className={`px-4 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl text-xs sm:text-sm font-semibold transition-all duration-300 backdrop-blur-md border-2
                         ${activeFilter === category 
                             ? "bg-white text-black shadow-2xl border-white scale-105" 
                             : "bg-white/5 text-white hover:bg-white/10 border-white/20 hover:border-white/40"}`}
@@ -159,16 +159,35 @@ interface ProjectCardProps {
 
 const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Check if device is mobile
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
     
     const handleDemoClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
         e.stopPropagation();
         window.open(url, '_blank');
     };
 
+    // Simplified grid sizing for better mobile compatibility
     const getBentoSize = (size: string = 'small') => {
+        // On mobile, all cards are single column
+        if (isMobile) {
+            return 'col-span-1 h-[400px]';
+        }
+        
+        // Desktop sizing
         switch (size) {
             case 'large':
-                return 'col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-[500px] md:h-[600px]';
+                return 'col-span-1 md:col-span-2 row-span-2 h-[500px] md:h-[600px]';
             case 'medium':
                 return 'col-span-1 md:col-span-2 lg:col-span-1 row-span-1 h-[300px] md:h-[350px]';
             case 'small':
@@ -177,9 +196,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
         }
     };
 
+    // Show content by default on mobile, on hover for desktop
+    const shouldShowContent = isMobile || isHovered;
+
     return (
         <motion.div
-            className={`relative overflow-hidden rounded-3xl group cursor-pointer 
+            className={`relative overflow-hidden rounded-2xl sm:rounded-3xl group cursor-pointer 
                 ${getBentoSize(project.size)} shadow-2xl border border-white/10`}
             initial={{ opacity: 0, y: 60, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -190,28 +212,28 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 ease: [0.23, 1, 0.320, 1] 
             }}
             whileHover={{ 
-                scale: 1.02,
-                y: -8,
+                scale: isMobile ? 1 : 1.02,
+                y: isMobile ? 0 : -8,
                 transition: { duration: 0.4, ease: "easeOut" }
             }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            {/* Background Image - Always Visible */}
+            {/* Background Image */}
             <div className="absolute inset-0">
                 <Image 
                     src={project.image}
                     alt={project.title}
                     fill
                     className={`object-cover transition-all duration-700 ${
-                        isHovered ? 'scale-110 blur-[2px]' : 'scale-100'
+                        shouldShowContent ? 'scale-110 blur-[2px]' : 'scale-100'
                     }`}
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
                 
-                {/* Gradient Overlay */}
+                {/* Gradient Overlay - Always visible on mobile */}
                 <div className={`absolute inset-0 bg-gradient-to-t transition-all duration-500 ${
-                    isHovered 
+                    shouldShowContent 
                         ? 'from-black/90 via-black/60 to-black/30' 
                         : 'from-black/20 via-transparent to-transparent'
                 }`} />
@@ -220,44 +242,44 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] [background-size:20px_20px] opacity-20" />
             </div>
 
-            {/* Minimal Default State - Just Category */}
+            {/* Minimal Default State - Just Category (Desktop only) */}
             <AnimatePresence>
-                {!isHovered && (
+                {!shouldShowContent && (
                     <motion.div
-                        className="absolute top-6 left-6 z-10"
+                        className="absolute top-4 sm:top-6 left-4 sm:left-6 z-10"
                         initial={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
                         transition={{ duration: 0.3 }}
                     >
-                        <span className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-sm text-white font-medium border border-white/30">
+                        <span className="px-3 sm:px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-xs sm:text-sm text-white font-medium border border-white/30">
                             {project.category}
                         </span>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Hover Content - All Information */}
+            {/* Content - Always visible on mobile, hover on desktop */}
             <AnimatePresence>
-                {isHovered && (
+                {shouldShowContent && (
                     <motion.div
-                        className="absolute inset-0 flex flex-col justify-between p-8 z-20"
-                        initial={{ opacity: 0 }}
+                        className="absolute inset-0 flex flex-col justify-between p-4 sm:p-8 z-20"
+                        initial={{ opacity: isMobile ? 1 : 0 }}
                         animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
+                        exit={{ opacity: isMobile ? 1 : 0 }}
                         transition={{ duration: 0.4 }}
                     >
                         {/* Top Section - Year and Category */}
                         <motion.div
-                            className="flex items-center justify-between"
-                            initial={{ opacity: 0, y: -20 }}
+                            className="flex items-center justify-between flex-wrap gap-2"
+                            initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : -20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.1, duration: 0.4 }}
+                            transition={{ delay: isMobile ? 0 : 0.1, duration: 0.4 }}
                         >
-                            <div className="flex gap-3">
-                                <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-sm text-white font-semibold border border-white/20">
+                            <div className="flex gap-2 sm:gap-3 flex-wrap">
+                                <span className="px-3 sm:px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-xs sm:text-sm text-white font-semibold border border-white/20">
                                     {project.year}
                                 </span>
-                                <span className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-sm text-white font-semibold border border-white/30">
+                                <span className="px-3 sm:px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-xs sm:text-sm text-white font-semibold border border-white/30">
                                     {project.category}
                                 </span>
                             </div>
@@ -265,71 +287,72 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
 
                         {/* Bottom Section - Main Content */}
                         <motion.div
-                            initial={{ opacity: 0, y: 30 }}
+                            initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 30 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2, duration: 0.4 }}
+                            transition={{ delay: isMobile ? 0 : 0.2, duration: 0.4 }}
                         >
                             {/* Title */}
-                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
+                            <h3 className="text-lg sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 leading-tight">
                                 {project.title}
                             </h3>
                             
-                            {/* Description */}
-                            <p className="text-gray-200 text-base mb-6 leading-relaxed line-clamp-3">
+                            {/* Description - Truncated on mobile */}
+                            <p className="text-gray-200 text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed line-clamp-2 sm:line-clamp-3">
                                 {project.description}
                             </p>
                             
-                            {/* Technologies */}
-                            <div className="flex flex-wrap gap-2 mb-6">
-                                {project.technologies.slice(0, 4).map((tech, techIndex) => (
+                            {/* Technologies - Show fewer on mobile */}
+                            <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
+                                {project.technologies.slice(0, isMobile ? 3 : 4).map((tech, techIndex) => (
                                     <motion.div
                                         key={techIndex}
-                                        className="flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-md rounded-xl text-sm text-white font-medium border border-white/20"
-                                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                                        className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-2 bg-white/10 backdrop-blur-md rounded-lg sm:rounded-xl text-xs sm:text-sm text-white font-medium border border-white/20"
+                                        initial={{ opacity: isMobile ? 1 : 0, scale: isMobile ? 1 : 0.8, y: isMobile ? 0 : 10 }}
                                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                                        transition={{ delay: 0.3 + techIndex * 0.05, duration: 0.3 }}
+                                        transition={{ delay: isMobile ? 0 : 0.3 + techIndex * 0.05, duration: 0.3 }}
                                     >
                                         {project.icons[techIndex] && (
                                             <Image 
                                                 src={project.icons[techIndex]} 
                                                 alt={tech} 
-                                                width={16} 
-                                                height={16} 
+                                                width={isMobile ? 12 : 16} 
+                                                height={isMobile ? 12 : 16} 
                                                 className="rounded"
                                             />
                                         )}
-                                        <span>{tech}</span>
+                                        <span className="hidden sm:inline">{tech}</span>
+                                        <span className="sm:hidden">{tech.split(' ')[0]}</span>
                                     </motion.div>
                                 ))}
-                                {project.technologies.length > 4 && (
+                                {project.technologies.length > (isMobile ? 3 : 4) && (
                                     <motion.span 
-                                        className="px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md rounded-xl text-sm text-white font-medium border border-white/20"
-                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        className="px-2 sm:px-3 py-1 sm:py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md rounded-lg sm:rounded-xl text-xs sm:text-sm text-white font-medium border border-white/20"
+                                        initial={{ opacity: isMobile ? 1 : 0, scale: isMobile ? 1 : 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: 0.5, duration: 0.3 }}
+                                        transition={{ delay: isMobile ? 0 : 0.5, duration: 0.3 }}
                                     >
-                                        +{project.technologies.length - 4} more
+                                        +{project.technologies.length - (isMobile ? 3 : 4)}
                                     </motion.span>
                                 )}
                             </div>
                             
                             {/* Action Buttons */}
                             <motion.div
-                                className="flex gap-4"
-                                initial={{ opacity: 0, y: 20 }}
+                                className="flex gap-3 sm:gap-4"
+                                initial={{ opacity: isMobile ? 1 : 0, y: isMobile ? 0 : 20 }}
                                 animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.4, duration: 0.4 }}
+                                transition={{ delay: isMobile ? 0 : 0.4, duration: 0.4 }}
                             >
                                 <motion.button
                                     onClick={(e) => handleDemoClick(e, project.demoUrl)}
-                                    className="flex items-center gap-3 px-6 py-3 bg-white text-black rounded-2xl font-semibold text-sm hover:bg-gray-100 transition-all duration-300 shadow-lg group/btn border-2 border-transparent hover:border-white/20"
+                                    className="flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 bg-white text-black rounded-xl sm:rounded-2xl font-semibold text-xs sm:text-sm hover:bg-gray-100 transition-all duration-300 shadow-lg group/btn border-2 border-transparent hover:border-white/20"
                                     whileHover={{ scale: 1.05, y: -2 }}
                                     whileTap={{ scale: 0.95 }}
                                 >
                                     <span>Live Demo</span>
                                     <svg 
                                         xmlns="http://www.w3.org/2000/svg" 
-                                        className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" 
+                                        className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover/btn:translate-x-1" 
                                         viewBox="0 0 20 20" 
                                         fill="currentColor"
                                     >
@@ -337,17 +360,18 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
                                         <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                                     </svg>
                                 </motion.button>
-                                
                             </motion.div>
                         </motion.div>
                     </motion.div>
                 )}
             </AnimatePresence>
 
-            {/* Hover Border Effect */}
-            <div className={`absolute inset-0 rounded-3xl transition-all duration-500 ${
-                isHovered ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent' : ''
-            }`} />
+            {/* Hover Border Effect - Disabled on mobile */}
+            {!isMobile && (
+                <div className={`absolute inset-0 rounded-3xl transition-all duration-500 ${
+                    isHovered ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent' : ''
+                }`} />
+            )}
         </motion.div>
     );
 };
@@ -431,14 +455,14 @@ export const Projects = () => {
         >
             <motion.section 
                 id="projects" 
-                className="py-32 text-white min-h-screen"
+                className="py-16 sm:py-32 text-white min-h-screen"
                 variants={sectionVariants}
                 initial="hidden"
                 animate={isSectionInView ? "visible" : "hidden"}
             >
-                <div className="max-w-8xl mx-auto px-6">
-                    <motion.div className="text-center mb-20" variants={childVariants}>
-                        <h2 className="text-6xl font-bold mb-10 tracking-tight">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <motion.div className="text-center mb-12 sm:mb-20" variants={childVariants}>
+                        <h2 className="text-4xl sm:text-6xl font-bold mb-6 sm:mb-10 tracking-tight">
                             My <motion.span style={{ color }} className="inline-block">Projects</motion.span>
                         </h2>
                     </motion.div>
@@ -450,9 +474,9 @@ export const Projects = () => {
                         activeFilter={activeFilter}
                     />
                     
-                    {/* Enhanced Bento Grid */}
+                    {/* Mobile-First Grid */}
                     <motion.div 
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-rows-min"
+                        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 auto-rows-min"
                         variants={childVariants}
                     >
                         <AnimatePresence mode="wait">
@@ -529,12 +553,12 @@ export const Projects = () => {
                         </motion.div>
                         
                         <motion.div 
-                            className="text-gray-400 text-center"
+                            className="text-gray-400 text-center text-sm"
                             initial={{ opacity: 0 }}
                             animate={isSectionInView ? { opacity: 1 } : { opacity: 0 }}
                             transition={{ delay: 0.8, duration: 0.5 }}
                         >
-                            <p>&copy; 2025 Copyright <br />Cedrix James Estoquia. All rights reserved.</p>
+                            <p>&copy; 2025 Copyright <br className="sm:hidden" />Cedrix James Estoquia. All rights reserved.</p>
                         </motion.div>
                     </div>
                 </div>
