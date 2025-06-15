@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import type { StaticImageData } from "next/image"; 
+// For Next.js, images should be imported from the public folder using string paths
 import proj1 from "../public/assets/proj1.jpeg";
 import proj2 from "../public/assets/proj2.jpeg";
 import proj3 from "../public/assets/proj3.jpeg";
@@ -20,6 +21,7 @@ interface ProjectType {
     icons: string[];
     image: StaticImageData;
     demoUrl: string;
+    size?: 'small' | 'medium' | 'large';
 }
 
 const projects: ProjectType[] = [
@@ -32,7 +34,8 @@ const projects: ProjectType[] = [
         technologies: ["React", "Appwrite", "Tailwind CSS"],
         icons: ["/assets/icons8-react.svg", "/assets/Appwrite.svg", "/assets/icons8-tailwind.svg"],
         image: proj1,
-        demoUrl: "https://cje-movies.vercel.app/", 
+        demoUrl: "https://cje-movies.vercel.app/",
+        size: 'large'
     },
     {
         id: 2,
@@ -43,7 +46,8 @@ const projects: ProjectType[] = [
         technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-bootstrap.svg", "/assets/icons8-js.svg"],
         image: proj2,
-        demoUrl: "https://sushi-1xnq.vercel.app/", 
+        demoUrl: "https://sushi-1xnq.vercel.app/",
+        size: 'large'
     },
     {
         id: 3,
@@ -54,7 +58,8 @@ const projects: ProjectType[] = [
         technologies: ["HTML", "CSS", "Bootstrap", "JavaScript"],
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-bootstrap.svg", "/assets/icons8-js.svg"],
         image: proj3,
-        demoUrl: "https://cedrix49.github.io/cbis", 
+        demoUrl: "https://cedrix49.github.io/cbis",
+        size: 'large'
     },
     {   
         id: 4,
@@ -65,7 +70,8 @@ const projects: ProjectType[] = [
         technologies: ["HTML", "CSS", "PHP", "JavaScript", "MySQL"],
         icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-sql.svg"],
         image: proj4,
-        demoUrl: "https://cedrix49.github.io/cbis", 
+        demoUrl: "https://cedrix49.github.io/cbis",
+        size: 'large'
     },
     {
         id: 5,
@@ -73,10 +79,11 @@ const projects: ProjectType[] = [
         title: "Complete Authentication System using JWT - Build In MERN Stack",
         description: "A complete authentication system built in MERN Stack",
         category: "Practice",
-        technologies: ["React", "Tailwind CSS", "Express.js", "Node.js", "MongoDB"],
+        technologies: ["React", "Express.js", "MongoDB", "Tailwind", "MongoDB"],
         icons: ["/assets/icons8-react.svg", "/assets/icons8-express-js.svg", "/assets/icons8-mongodb.svg", "/assets/icons8-tailwind.svg", "/assets/icons8-node-js.svg"],
-        image: proj5,
+        image: proj6,
         demoUrl: "https://completauth.vercel.app",
+        size: 'large'
     },
     {
         id: 6,
@@ -84,10 +91,11 @@ const projects: ProjectType[] = [
         title: "Mental Health Journal",
         description: "A mental health journal built using MERN Stack for people to write their thoughts",
         category: "Practice",
-        technologies: ["React", "Tailwind CSS", "Express.js", "Node.js", "MongoDB"],
+        technologies: ["React", "Express.js", "MongoDB", "Tailwind", "MongoDB"],
         icons: ["/assets/icons8-react.svg", "/assets/icons8-express-js.svg", "/assets/icons8-mongodb.svg", "/assets/icons8-tailwind.svg", "/assets/icons8-node-js.svg"],
-        image: proj6,
+        image: proj5,
         demoUrl: "https://mental-health-journal-five.vercel.app",
+        size: 'large'
     },
 ];
 
@@ -97,47 +105,6 @@ const COLORS_TOP = [
     '#CE84CF',
     '#DD335C',
 ]
-
-const contentVariants = {
-    hidden: { 
-        opacity: 0, 
-        x: -20 
-    },
-    visible: { 
-        opacity: 1, 
-        x: 0,
-        transition: { 
-            duration: 0.5,
-            ease: "easeOut"
-        }
-    },
-    exit: { 
-        opacity: 0, 
-        x: 20,
-        transition: { 
-            duration: 0.3,
-            ease: "easeIn"
-        }
-    }
-};
-
-const headerVariants = {
-    normal: { scale: 1 },
-    hover: { scale: 1.03, transition: { duration: 0.2 } },
-    tap: { scale: 0.98, transition: { duration: 0.1 } }
-};
-
-// Animation variants for the divider
-const dividerVariants = {
-    hidden: { width: "0%" },
-    visible: { 
-        width: "100%",
-        transition: { 
-            duration: 0.5,
-            ease: "easeOut"
-        }
-    }
-};
 
 // Project Filter Component
 interface ProjectFilterProps {
@@ -149,32 +116,32 @@ interface ProjectFilterProps {
 const ProjectFilter: React.FC<ProjectFilterProps> = ({ categories, onFilterChange, activeFilter }) => {
     return (
         <motion.div 
-            className="flex flex-wrap gap-3 mb-8"
+            className="flex flex-wrap justify-center gap-4 mb-16"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
         >
             <motion.button
-                className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 
+                className={`px-8 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 backdrop-blur-md border-2
                     ${activeFilter === "all" 
-                        ? "bg-white text-black" 
-                        : "bg-black bg-opacity-30 text-white hover:bg-opacity-50"}`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+                        ? "bg-white text-black shadow-2xl border-white scale-105" 
+                        : "bg-white/5 text-white hover:bg-white/10 border-white/20 hover:border-white/40"}`}
+                whileHover={{ scale: activeFilter === "all" ? 1.05 : 1.02, y: -2 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => onFilterChange("all")}
             >
-                All
+                All Projects
             </motion.button>
             
             {categories.map((category) => (
                 <motion.button
                     key={category}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 
+                    className={`px-8 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 backdrop-blur-md border-2
                         ${activeFilter === category 
-                            ? "bg-white text-black" 
-                            : "bg-black bg-opacity-30 text-white hover:bg-opacity-50"}`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                            ? "bg-white text-black shadow-2xl border-white scale-105" 
+                            : "bg-white/5 text-white hover:bg-white/10 border-white/20 hover:border-white/40"}`}
+                    whileHover={{ scale: activeFilter === category ? 1.05 : 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
                     onClick={() => onFilterChange(category)}
                 >
                     {category}
@@ -184,19 +151,214 @@ const ProjectFilter: React.FC<ProjectFilterProps> = ({ categories, onFilterChang
     );
 };
 
+// Individual Project Card Component
+interface ProjectCardProps {
+    project: ProjectType;
+    index: number;
+}
+
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, index }) => {
+    const [isHovered, setIsHovered] = useState(false);
+    
+    const handleDemoClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
+        e.stopPropagation();
+        window.open(url, '_blank');
+    };
+
+    const getBentoSize = (size: string = 'small') => {
+        switch (size) {
+            case 'large':
+                return 'col-span-1 md:col-span-2 lg:col-span-2 row-span-2 h-[500px] md:h-[600px]';
+            case 'medium':
+                return 'col-span-1 md:col-span-2 lg:col-span-1 row-span-1 h-[300px] md:h-[350px]';
+            case 'small':
+            default:
+                return 'col-span-1 row-span-1 h-[250px] md:h-[300px]';
+        }
+    };
+
+    return (
+        <motion.div
+            className={`relative overflow-hidden rounded-3xl group cursor-pointer 
+                ${getBentoSize(project.size)} shadow-2xl border border-white/10`}
+            initial={{ opacity: 0, y: 60, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -60, scale: 0.9 }}
+            transition={{ 
+                delay: index * 0.1, 
+                duration: 0.7,
+                ease: [0.23, 1, 0.320, 1] 
+            }}
+            whileHover={{ 
+                scale: 1.02,
+                y: -8,
+                transition: { duration: 0.4, ease: "easeOut" }
+            }}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {/* Background Image - Always Visible */}
+            <div className="absolute inset-0">
+                <Image 
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className={`object-cover transition-all duration-700 ${
+                        isHovered ? 'scale-110 blur-[2px]' : 'scale-100'
+                    }`}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+                
+                {/* Gradient Overlay */}
+                <div className={`absolute inset-0 bg-gradient-to-t transition-all duration-500 ${
+                    isHovered 
+                        ? 'from-black/90 via-black/60 to-black/30' 
+                        : 'from-black/20 via-transparent to-transparent'
+                }`} />
+                
+                {/* Subtle Pattern Overlay */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] [background-size:20px_20px] opacity-20" />
+            </div>
+
+            {/* Minimal Default State - Just Category */}
+            <AnimatePresence>
+                {!isHovered && (
+                    <motion.div
+                        className="absolute top-6 left-6 z-10"
+                        initial={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.3 }}
+                    >
+                        <span className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-sm text-white font-medium border border-white/30">
+                            {project.category}
+                        </span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Hover Content - All Information */}
+            <AnimatePresence>
+                {isHovered && (
+                    <motion.div
+                        className="absolute inset-0 flex flex-col justify-between p-8 z-20"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                    >
+                        {/* Top Section - Year and Category */}
+                        <motion.div
+                            className="flex items-center justify-between"
+                            initial={{ opacity: 0, y: -20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1, duration: 0.4 }}
+                        >
+                            <div className="flex gap-3">
+                                <span className="px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-sm text-white font-semibold border border-white/20">
+                                    {project.year}
+                                </span>
+                                <span className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-sm text-white font-semibold border border-white/30">
+                                    {project.category}
+                                </span>
+                            </div>
+                        </motion.div>
+
+                        {/* Bottom Section - Main Content */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2, duration: 0.4 }}
+                        >
+                            {/* Title */}
+                            <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
+                                {project.title}
+                            </h3>
+                            
+                            {/* Description */}
+                            <p className="text-gray-200 text-base mb-6 leading-relaxed line-clamp-3">
+                                {project.description}
+                            </p>
+                            
+                            {/* Technologies */}
+                            <div className="flex flex-wrap gap-2 mb-6">
+                                {project.technologies.slice(0, 4).map((tech, techIndex) => (
+                                    <motion.div
+                                        key={techIndex}
+                                        className="flex items-center gap-2 px-3 py-2 bg-white/10 backdrop-blur-md rounded-xl text-sm text-white font-medium border border-white/20"
+                                        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                                        transition={{ delay: 0.3 + techIndex * 0.05, duration: 0.3 }}
+                                    >
+                                        {project.icons[techIndex] && (
+                                            <Image 
+                                                src={project.icons[techIndex]} 
+                                                alt={tech} 
+                                                width={16} 
+                                                height={16} 
+                                                className="rounded"
+                                            />
+                                        )}
+                                        <span>{tech}</span>
+                                    </motion.div>
+                                ))}
+                                {project.technologies.length > 4 && (
+                                    <motion.span 
+                                        className="px-3 py-2 bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur-md rounded-xl text-sm text-white font-medium border border-white/20"
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.5, duration: 0.3 }}
+                                    >
+                                        +{project.technologies.length - 4} more
+                                    </motion.span>
+                                )}
+                            </div>
+                            
+                            {/* Action Buttons */}
+                            <motion.div
+                                className="flex gap-4"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.4, duration: 0.4 }}
+                            >
+                                <motion.button
+                                    onClick={(e) => handleDemoClick(e, project.demoUrl)}
+                                    className="flex items-center gap-3 px-6 py-3 bg-white text-black rounded-2xl font-semibold text-sm hover:bg-gray-100 transition-all duration-300 shadow-lg group/btn border-2 border-transparent hover:border-white/20"
+                                    whileHover={{ scale: 1.05, y: -2 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    <span>Live Demo</span>
+                                    <svg 
+                                        xmlns="http://www.w3.org/2000/svg" 
+                                        className="h-4 w-4 transition-transform group-hover/btn:translate-x-1" 
+                                        viewBox="0 0 20 20" 
+                                        fill="currentColor"
+                                    >
+                                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                                    </svg>
+                                </motion.button>
+                                
+                            </motion.div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Hover Border Effect */}
+            <div className={`absolute inset-0 rounded-3xl transition-all duration-500 ${
+                isHovered ? 'ring-2 ring-white/30 ring-offset-2 ring-offset-transparent' : ''
+            }`} />
+        </motion.div>
+    );
+};
+
 export const Projects = () => {
-    const [selectedProject, setSelectedProject] = useState(projects[0]);  
     const [activeFilter, setActiveFilter] = useState("all");
     const [filteredProjects, setFilteredProjects] = useState(projects);
     
     const color = useMotionValue(COLORS_TOP[0]);
-    
     const sectionRef = useRef(null);
-    const contentRef = useRef(null);
-    const imageRef = useRef(null);
-    
     const isSectionInView = useInView(sectionRef, { once: true, amount: 0.2 });
-    const isImageInView = useInView(imageRef, { once: true, amount: 0.5 });
     
     // Extract unique categories
     const categories = [...new Set(projects.map(project => project.category))];
@@ -208,11 +370,6 @@ export const Projects = () => {
             : projects.filter(project => project.category === activeFilter);
         
         setFilteredProjects(newFilteredProjects);
-        
-        // Set first filtered project as selected when filter changes
-        if (newFilteredProjects.length > 0) {
-            setSelectedProject(newFilteredProjects[0]);
-        }
     }, [activeFilter]);
     
     const handleFilterChange = (filter: string) => {
@@ -241,11 +398,6 @@ export const Projects = () => {
     
     const backgroundImage = useMotionTemplate`radial-gradient( 125% 125% at 50% 0%, #000 50%, ${color})`
     
-    const handleDemoClick = (e: React.MouseEvent<HTMLButtonElement>, url: string) => {
-        e.stopPropagation();
-        window.open(url, '_blank');
-    };
-    
     const sectionVariants = {
         hidden: { opacity: 0 },
         visible: { 
@@ -253,7 +405,7 @@ export const Projects = () => {
             transition: {
                 duration: 0.8,
                 when: "beforeChildren",
-                staggerChildren: 0.2
+                staggerChildren: 0.1
             }
         }
     };
@@ -270,52 +422,6 @@ export const Projects = () => {
         }
     };
     
-    const imageVariants = {
-        hidden: { opacity: 0, scale: 0.9, y: 30 },
-        visible: { 
-            opacity: 1, 
-            scale: 1,
-            y: 0,
-            transition: {
-                duration: 0.8,
-                ease: "easeOut"
-            }
-        }
-    };
-
-    const projectItemVariants = {
-        initial: { opacity: 0, height: 0 },
-        animate: { 
-            opacity: 1, 
-            height: "auto",
-            transition: {
-                duration: 0.4,
-                ease: "easeOut",
-                when: "beforeChildren",
-                staggerChildren: 0.1
-            }
-        },
-        exit: { 
-            opacity: 0, 
-            height: 0,
-            transition: {
-                duration: 0.3,
-                ease: "easeIn"
-            }
-        }
-    };
-
-    const techItemVariants = {
-        initial: { opacity: 0, x: -10 },
-        animate: { 
-            opacity: 1, 
-            x: 0,
-            transition: {
-                duration: 0.3
-            }
-        }
-    };
-    
     return (
         <motion.div 
             style={{
@@ -325,156 +431,39 @@ export const Projects = () => {
         >
             <motion.section 
                 id="projects" 
-                className="py-32 text-white"
+                className="py-32 text-white min-h-screen"
                 variants={sectionVariants}
                 initial="hidden"
                 animate={isSectionInView ? "visible" : "hidden"}
             >
-                <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12">
-                    <motion.div ref={contentRef}>
-                        <motion.h2 
-                            className="text-6xl font-bold mb-10"
-                            variants={childVariants}
-                        >
-                            Completed <motion.span style={{ color }}>Projects</motion.span>
-                        </motion.h2>
-                        
-                        {/* Project Filter Component */}
-                        <ProjectFilter 
-                            categories={categories} 
-                            onFilterChange={handleFilterChange} 
-                            activeFilter={activeFilter}
-                        />
-                        
-                        {/* Project List */}
-                        <AnimatePresence mode="wait">
-                            {filteredProjects.map((project, index) => (
-                                <motion.div 
-                                    key={project.id} 
-                                    className="mb-10"
-                                    variants={childVariants}
-                                    custom={index}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
-                                    transition={{
-                                        delay: index * 0.15,
-                                        duration: 0.4
-                                    }}
-                                >
-                                    <motion.div
-                                        onClick={() => setSelectedProject(project)}
-                                        className="cursor-pointer mb-8 group"
-                                        variants={headerVariants}
-                                        initial="normal"
-                                        whileHover="hover"
-                                        whileTap="tap"
-                                    >
-                                        <div className="flex justify-between">
-                                            <p className="text-gray-400 text-large mb-2">{project.year}</p>
-                                            <p className="text-gray-400 text-large mb-2">{project.category}</p>
-                                        </div>
-                                        <h3 className={`text-3xl font-semibold group-hover:text-gray-400 transition-colors 
-                                            ${selectedProject.id === project.id ? 'text-gray-200' : ''} duration-300`}>
-                                            {project.title}
-                                        </h3>
-                                        
-                                        <AnimatePresence>
-                                            {selectedProject.id === project.id && (
-                                                <motion.div 
-                                                    className="border-b-2 border-gray-200 my-4"
-                                                    variants={dividerVariants}
-                                                    initial="hidden"
-                                                    animate="visible"
-                                                    exit="hidden"
-                                                />
-                                            )}
-                                        </AnimatePresence>
-                                        
-                                        <AnimatePresence>
-                                            {selectedProject.id === project.id && (
-                                                <motion.div
-                                                    variants={projectItemVariants}
-                                                    initial="initial"
-                                                    animate="animate"
-                                                    exit="exit"
-                                                >
-                                                    <motion.p 
-                                                        className="text-gray-400 transition-all duration-500 ease-in-out mb-3"
-                                                        variants={contentVariants}
-                                                    >
-                                                        {project.description}
-                                                    </motion.p>
-                                                    
-                                                    <div className="flex flex-wrap gap-4 mb-4">
-                                                        {project.technologies.map((tech, index) => (
-                                                            <motion.div 
-                                                                key={index} 
-                                                                className="flex items-center text-white"
-                                                                variants={techItemVariants}
-                                                            >
-                                                                <Image 
-                                                                    src={project.icons[index]} 
-                                                                    alt={tech} 
-                                                                    width={20} 
-                                                                    height={20} 
-                                                                    className="mr-2"
-                                                                />
-                                                                <span>{tech}</span>
-                                                            </motion.div>
-                                                        ))}
-                                                    </div>
-                                                    
-                                                    <motion.button
-                                                        onClick={(e) => handleDemoClick(e, project.demoUrl)}
-                                                        className="mt-4 cursor-pointer px-4 py-2 bg-black bg-opacity-70 hover:bg-opacity-90 text-white rounded-md transition-all duration-300 flex items-center gap-2"
-                                                        variants={techItemVariants}
-                                                        whileHover={{ scale: 1.05 }}
-                                                        whileTap={{ scale: 0.95 }}
-                                                    >
-                                                        <span>Live Demo</span>
-                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                                            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                                                            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                                                        </svg>
-                                                    </motion.button>
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-                                    </motion.div>
-                                </motion.div>  
-                            ))}
-                        </AnimatePresence>
+                <div className="max-w-8xl mx-auto px-6">
+                    <motion.div className="text-center mb-20" variants={childVariants}>
+                        <h2 className="text-6xl font-bold mb-10 tracking-tight">
+                            My <motion.span style={{ color }} className="inline-block">Projects</motion.span>
+                        </h2>
                     </motion.div>
+                    
+                    {/* Project Filter */}
+                    <ProjectFilter 
+                        categories={categories} 
+                        onFilterChange={handleFilterChange} 
+                        activeFilter={activeFilter}
+                    />
+                    
+                    {/* Enhanced Bento Grid */}
                     <motion.div 
-                        className="relative w-full mx-auto"
-                        ref={imageRef}
-                        variants={imageVariants}
-                        initial="hidden"
-                        animate={isImageInView ? "visible" : "hidden"}
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 auto-rows-min"
+                        variants={childVariants}
                     >
                         <AnimatePresence mode="wait">
-                            <motion.div
-                                key={selectedProject.id}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.5 }}
-                            >
-                                <Image 
-                                    src={selectedProject.image}
-                                    alt={selectedProject.title}
-                                    className="rounded-xl shadow-lg transition-opacity duration-500 ease-in-out w-full object-cover"
-                                    width={800}
-                                    height={450}
-                                    sizes="(max-width: 768px) 100vw, 800px"
-                                    loading="lazy"
-                                    placeholder="blur"
-                                    blurDataURL={selectedProject.image.src}
+                            {filteredProjects.map((project, index) => (
+                                <ProjectCard 
+                                    key={`${project.id}-${activeFilter}`}
+                                    project={project} 
+                                    index={index}
                                 />
-                            </motion.div>
+                            ))}
                         </AnimatePresence>
-
                     </motion.div>
                 </div>
             </motion.section>
