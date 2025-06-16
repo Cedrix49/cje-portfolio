@@ -9,6 +9,7 @@ import proj3 from "../public/assets/proj3.jpeg";
 import proj4 from "../public/assets/proj4.jpeg";
 import proj5 from "../public/assets/proj5.jpeg";
 import proj6 from "../public/assets/proj6.jpeg";
+import proj7 from "../public/assets/proj7.jpeg";
 import { useMotionTemplate, useMotionValue, motion, animate, AnimatePresence } from "framer-motion";
 
 interface ProjectType {
@@ -95,6 +96,18 @@ const projects: ProjectType[] = [
         icons: ["/assets/icons8-react.svg", "/assets/icons8-express-js.svg", "/assets/icons8-mongodb.svg", "/assets/icons8-tailwind.svg", "/assets/icons8-node-js.svg"],
         image: proj5,
         demoUrl: "https://mental-health-journal-five.vercel.app",
+        size: 'large'
+    },
+        {
+        id: 7,
+        year: 2025,
+        title: "Kainan Na! Restaurant Management System",
+        description: "A full-stack restaurant management system made using Vanilla PHP and MySQL. It also has payment integration using PayPal.",
+        category: "Practice",
+        technologies: ["HTML", "CSS", "Bootstrap", "PHP", "Javascript", "MySQL"],
+        icons: ["/assets/icons8-html.svg", "/assets/icons8-css3.svg", "/assets/icons8-bootstrap.svg", "/assets/icons8-php.svg", "/assets/icons8-js.svg", "/assets/icons8-sql.svg"],
+        image: proj7,
+        demoUrl: "https://kainan-na.infinityfreeapp.com",
         size: 'large'
     },
 ];
