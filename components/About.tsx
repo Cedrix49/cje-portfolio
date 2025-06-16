@@ -10,7 +10,18 @@ const COLORS_TOP = [
     '#DD335C',
 ]
 
-const skills = [
+interface Skill {
+    name: string;
+    icon: string;
+}
+
+interface Experience {
+    period: string;
+    role: string;
+    description: string;
+}
+
+const skills: Skill[] = [
     {
         name: "React",
         icon: "/assets/icons8-react.svg"
@@ -72,7 +83,7 @@ const FloatingCard = ({ children, delay = 0 }: { children: React.ReactNode; dela
     </motion.div>
 );
 
-const SkillBubble = ({ skill, index, activeColor }: { skill: any; index: number; activeColor: string }) => (
+const SkillBubble = ({ skill, index, activeColor }: { skill: Skill; index: number; activeColor: string }) => (
     <motion.div
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -112,7 +123,7 @@ const SkillBubble = ({ skill, index, activeColor }: { skill: any; index: number;
     </motion.div>
 );
 
-const ExperienceCard = ({ experience, index, activeColor }: { experience: any; index: number; activeColor: string }) => (
+const ExperienceCard = ({ experience, index, activeColor }: { experience: Experience; index: number; activeColor: string }) => (
     <motion.div
         initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
         animate={{ opacity: 1, x: 0 }}
@@ -161,7 +172,7 @@ export const About = () => {
         sequence();
     }, [color]);
 
-    const experiences = [
+    const experiences: Experience[] = [
         {
             period: "Present",
             role: "Freelancer", 
@@ -170,7 +181,7 @@ export const About = () => {
         {
             period: "January 2025 - March 2025",
             role: "Full Stack Developer Intern",
-            description: "Assisted in developing the company's procurement and inventory management system as well as designing the company's website."
+            description: "Assisted in developing the company&apos;s procurement and inventory management system as well as designing the company&apos;s website."
         }
     ];
 
@@ -303,9 +314,9 @@ export const About = () => {
                                         >
                                             👨‍💻
                                         </motion.div>
-                                        <h3 className="text-3xl font-bold mb-6">Hello, I'm a Developer</h3>
+                                        <h3 className="text-3xl font-bold mb-6">Hello, I&apos;m a Developer</h3>
                                         <p className="text-lg text-gray-300 leading-relaxed mb-6">
-                                            I'm an aspiring full stack developer passionate about creating interactive and responsive web applications. 
+                                            I&apos;m an aspiring full stack developer passionate about creating interactive and responsive web applications. 
                                             With experience in both front-end and back-end technologies, I enjoy bringing ideas to life 
                                             through clean, efficient code and thoughtful design.
                                         </p>
